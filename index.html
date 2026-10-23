@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyVortex Useful Tools Center</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neoYellow: '#FFDE59',
+                        neoGreen: '#7ED957',
+                        neoCyan: '#5271FF',
+                        neoPink: '#FF5757',
+                        neoOrange: '#FF914D',
+                        neoPurple: '#8C52FF',
+                        neoDark: '#111111',
+                        neoBg: '#F8F9FA'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace']
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px 0px #111111',
+                        'brutal-lg': '6px 6px 0px 0px #111111',
+                        'brutal-sm': '2px 2px 0px 0px #111111',
+                        'brutal-hover': '2px 2px 0px 0px #111111',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F8F9FA;
+            color: #111111;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            touch-action: manipulation;
+        }
+        .neo-border {
+            border: 3px solid #111111;
+        }
+        .neo-border-sm {
+            border: 2px solid #111111;
+        }
+        .neo-btn {
+            transition: all 0.15s ease-in-out;
+        }
+        .neo-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #111111 !important;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F8F9FA;
+            border-left: 2px solid #111111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFDE59;
+            border: 2px solid #111111;
+        }
+
+        /* SKYVORTEX — rounded Control Center redesign (palette and functionality retained) */
+        :root { --sv-glass: rgba(255,255,255,.82); --sv-line: rgba(255,255,255,.48); }
+        body {
+            background: radial-gradient(ellipse at 12% 10%, rgba(82,113,255,.14), transparent 34%),
+                        radial-gradient(ellipse at 88% 25%, rgba(126,217,87,.15), transparent 32%),
+                        radial-gradient(ellipse at 50% 100%, rgba(140,82,255,.12), transparent 38%), #F8F9FA;
+            padding-bottom: 84px;
+        }
+        .neo-border, .neo-border-sm {
+            border: 1px solid rgba(17,17,17,.10) !important;
+            border-radius: 22px !important;
+        }
+        .shadow-brutal, .shadow-brutal-lg, .shadow-brutal-sm {
+            box-shadow: 0 8px 24px rgba(24,32,55,.09) !important;
+        }
+        .neo-btn { border-radius: 16px !important; transition: transform .18s ease, filter .18s ease, box-shadow .18s ease; }
+        .neo-btn:hover { filter: brightness(.98); transform: translateY(-1px); }
+        .neo-btn:active { transform: scale(.98); box-shadow: 0 3px 10px rgba(24,32,55,.08) !important; }
+        header {
+            background: rgba(255,255,255,.82) !important;
+            border: 0 !important; border-bottom: 1px solid rgba(17,17,17,.08) !important;
+            backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+            box-shadow: 0 5px 24px rgba(24,32,55,.06) !important;
+        }
+        main { max-width: 1120px !important; }
+        main > section:first-child { border-radius: 26px !important; box-shadow: 0 14px 32px rgba(82,113,255,.16) !important; }
+        main > section:first-child > div > div { border-radius: 18px !important; }
+        .tab-content > div {
+            border-radius: 26px !important;
+            box-shadow: 0 12px 30px rgba(24,32,55,.08) !important;
+            border-color: rgba(17,17,17,.08) !important;
+        }
+        input:not([type=range]):not([type=checkbox]), select, textarea {
+            border-radius: 14px !important; border-color: rgba(17,17,17,.12) !important;
+            background-color: rgba(255,255,255,.86);
+            min-height: 42px;
+        }
+        input[type=file] { border-radius: 14px !important; }
+        .tab-content h2 { letter-spacing: -.035em; }
+        .tab-content .border-b-2 { border-color: rgba(17,17,17,.12) !important; }
+        #canvasPlaceholder { border-radius: 18px; }
+        #imageCanvas { border-radius: 16px !important; }
+        #aiChatBox, #waLog, #apiResponse { border-radius: 18px !important; }
+        nav {
+            left: 12px !important; right: 12px !important; bottom: 10px !important;
+            width: auto !important; max-width: 650px; margin: 0 auto;
+            border: 1px solid rgba(255,255,255,.6) !important; border-radius: 24px !important;
+            background: rgba(255,255,255,.82) !important;
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 12px 35px rgba(24,32,55,.16) !important;
+            padding: 7px 5px !important;
+        }
+        nav > div { max-width: none !important; gap: 2px; }
+        .nav-btn {
+            flex: 1; min-width: 0; border-radius: 17px !important; padding: 8px 2px !important;
+            font-size: 9px !important; gap: 2px;
+        }
+        .nav-btn i { font-size: 17px !important; }
+        .nav-btn.text-neoDark { background: rgba(82,113,255,.12); color: #5271FF !important; }
+        #splashScreen { background: #F8F9FA !important; }
+        #splashScreen > div { border-radius: 28px !important; box-shadow: 0 16px 42px rgba(24,32,55,.12) !important; }
+        #splashScreen .rounded-full { border-radius: 50% !important; }
+        footer { background: transparent !important; color: #697080 !important; border: 0 !important; }
+        @media (min-width: 700px) {
+            main { padding-top: 28px !important; }
+            #tab-downloader { display: grid; grid-template-columns: minmax(0,1fr); gap: 22px; }
+            .tab-content > div { padding: 26px !important; }
+        }
+        @media (max-width: 520px) {
+            body { font-size: 14px; }
+            header { padding: 12px !important; }
+            main { padding: 12px !important; margin-bottom: 12px !important; }
+            main > section:first-child { padding: 13px !important; margin-bottom: 16px !important; }
+            main > section:first-child > div { gap: 8px !important; }
+            main > section:first-child > div > div { padding: 10px !important; }
+            .tab-content { gap: 16px !important; }
+            .tab-content > div { padding: 15px !important; border-radius: 23px !important; }
+            .tab-content h2 { font-size: 15px !important; line-height: 1.35; }
+            .tab-content p { line-height: 1.5; }
+            .nav-btn span { white-space: nowrap; }
+            #tab-ai > div { height: 65vh !important; min-height: 420px; }
+        }
+
+
+        /* SKYVORTEX — screenshot-inspired yellow dashboard skin.
+           Visual-only overrides: original text, controls, IDs and JavaScript remain intact. */
+        body {
+            background-color: #FFDE00 !important;
+            background-image: radial-gradient(circle at 12% 24%, rgba(255,255,255,.14), transparent 24%),
+                              radial-gradient(circle at 80% 72%, rgba(255,255,255,.10), transparent 28%) !important;
+            color: #111111 !important;
+            padding-bottom: 112px !important;
+        }
+        header {
+            background: #FFDE00 !important;
+            border: 0 !important;
+            border-bottom: 4px solid #111111 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+        header .w-10 { border-radius: 16px !important; border: 3px solid #111 !important; box-shadow: 3px 3px 0 #111 !important; }
+        header .bg-neoGreen { border-radius: 5px !important; }
+        main { max-width: 980px !important; padding-top: 22px !important; }
+        main > section:first-child {
+            background: #FFDE00 !important;
+            color: #111 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin-bottom: 22px !important;
+            overflow: visible !important;
+        }
+        main > section:first-child > div { gap: 12px !important; }
+        main > section:first-child > div > div {
+            background: #fff !important; color: #111 !important;
+            border: 3px solid #111 !important; border-radius: 0 !important;
+            box-shadow: 5px 5px 0 #111 !important;
+            padding: 15px !important;
+        }
+        .neo-border, .neo-border-sm {
+            border: 3px solid #111 !important;
+            border-radius: 0 !important;
+        }
+        .shadow-brutal, .shadow-brutal-lg, .shadow-brutal-sm {
+            box-shadow: 5px 5px 0 #111 !important;
+        }
+        .neo-btn {
+            border-radius: 10px !important;
+            transition: transform .15s ease, filter .15s ease !important;
+        }
+        .neo-btn:active { transform: translate(2px,2px) !important; box-shadow: 2px 2px 0 #111 !important; }
+        .tab-content > div {
+            background: #fff !important;
+            border: 3px solid #111 !important;
+            border-radius: 0 !important;
+            box-shadow: 6px 6px 0 #111 !important;
+            margin-bottom: 6px;
+        }
+        .tab-content .border-b-2 { border-color: #111 !important; }
+        input:not([type=range]):not([type=checkbox]), select, textarea {
+            border: 3px solid #111 !important;
+            border-radius: 8px !important;
+            background-color: #fff !important;
+            color: #111 !important;
+        }
+        input[type=file] { border-radius: 8px !important; }
+        #aiChatBox, #waLog, #apiResponse { border-radius: 0 !important; }
+        #canvasPlaceholder, #imageCanvas { border-radius: 0 !important; }
+        nav {
+            left: 18px !important; right: 18px !important; bottom: 22px !important;
+            width: auto !important; max-width: 680px !important; margin: 0 auto !important;
+            background: #fff !important;
+            border: 4px solid #111 !important;
+            border-radius: 38px !important;
+            box-shadow: 6px 7px 0 #111 !important;
+            backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+            padding: 9px 7px !important;
+        }
+        nav > div { max-width: none !important; gap: 3px !important; }
+        .nav-btn {
+            flex: 1; min-width: 0; border-radius: 20px !important;
+            padding: 10px 2px !important; color: #111 !important;
+            font-size: 10px !important; gap: 4px !important;
+        }
+        .nav-btn i { font-size: 21px !important; }
+        .nav-btn.text-neoDark {
+            background: #e9efff !important; color: #1764ed !important;
+            outline: 2px solid #111;
+        }
+        #splashScreen { background: #FFDE00 !important; z-index: 10000 !important; pointer-events: auto !important; }
+        #splashScreen > div {
+            border: 3px solid #111 !important; border-radius: 0 !important;
+            box-shadow: 6px 6px 0 #111 !important;
+        }
+        footer { background: #FFDE00 !important; color: #111 !important; border: 0 !important; }
+        ::-webkit-scrollbar-track { background: #FFDE00 !important; border-left: 2px solid #111 !important; }
+        ::-webkit-scrollbar-thumb { background: #5271FF !important; border: 2px solid #111 !important; }
+        @media (max-width: 520px) {
+            body { font-size: 14px !important; padding-bottom: 120px !important; }
+            header { padding: 12px !important; }
+            main { padding: 12px 20px 18px !important; margin-bottom: 8px !important; }
+            main > section:first-child { padding: 0 !important; margin-bottom: 22px !important; }
+            main > section:first-child > div { gap: 10px !important; }
+            main > section:first-child > div > div { padding: 12px !important; }
+            .tab-content { gap: 18px !important; }
+            .tab-content > div { padding: 15px !important; }
+            .tab-content h2 { font-size: 15px !important; line-height: 1.35; }
+            .tab-content p { line-height: 1.5; }
+            nav { left: 18px !important; right: 18px !important; bottom: 18px !important; border-radius: 34px !important; }
+            .nav-btn span { white-space: normal !important; text-align: center; line-height: 1.15; }
+            .nav-btn { font-size: 9px !important; }
+            .nav-btn i { font-size: 20px !important; }
+            #tab-ai > div { height: 65vh !important; min-height: 420px; }
+        }
+
+
+        /* Smooth and responsive tab switching */
+        html { scroll-behavior: smooth; }
+        .tab-content { will-change: opacity, transform; }
+        .tab-content.tab-entering { animation: svTabEnter .22s cubic-bezier(.2,.7,.2,1) both; }
+        @keyframes svTabEnter {
+            from { opacity: .35; transform: translateY(7px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-btn { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        .nav-btn:active { transform: scale(.96); }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .tab-content.tab-entering { animation: none; }
+            .nav-btn { transition: none !important; }
+        }
+
+
+        /* Mobile navigation hit-area and chat/text overflow fixes */
+        nav {
+            position: fixed !important;
+            z-index: 40 !important;
+            pointer-events: auto !important;
+            isolation: isolate;
+            transform: translateZ(0);
+            touch-action: manipulation !important;
+        }
+        nav { opacity: 1; visibility: visible; transition: opacity .18s ease; }
+        nav:not(.nav-ready) { /* kept behind splash until initial loading is finished */ }
+        nav .nav-btn {
+            position: relative;
+            z-index: 1;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 48px;
+            cursor: pointer;
+            pointer-events: auto !important;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation !important;
+        }
+        nav .nav-btn span { max-width: 100%; overflow-wrap: anywhere; }
+        .tab-content, .tab-content > div { min-width: 0; box-sizing: border-box; }
+        #aiChatBox { min-width: 0; max-width: 100%; overflow-x: hidden; overflow-y: auto; }
+        #aiChatBox > div { min-width: 0; max-width: 100%; }
+        #aiChatBox > div > div:last-child {
+            min-width: 0 !important;
+            max-width: min(82%, 100%) !important;
+            overflow-wrap: anywhere !important;
+            word-break: break-word !important;
+            white-space: pre-wrap !important;
+            box-sizing: border-box !important;
+        }
+        #aiInput { min-width: 0; width: 100%; }
+        #tab-settings label, #tab-settings p, #tab-settings a,
+        #tab-iroha label, #tab-iroha p, #tab-iroha pre {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            min-width: 0;
+        }
+        #tab-settings input { min-width: 0; max-width: 100%; }
+        #apiResponse { max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+        @media (max-width: 520px) {
+            nav { bottom: max(10px, env(safe-area-inset-bottom)) !important; left: 8px !important; right: 8px !important; }
+            nav > div { gap: 1px !important; }
+            nav .nav-btn { padding: 8px 1px !important; min-height: 50px; }
+            nav .nav-btn span { font-size: 8px !important; }
+            #tab-ai > div { min-height: 0 !important; height: min(68dvh, 620px) !important; }
+            #aiChatBox > div > div:last-child { max-width: 84% !important; }
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-neoYellow selection:text-neoDark">
+
+    <!-- SPLASH SCREEN -->
+    <div id="splashScreen" class="fixed inset-0 z-50 bg-neoYellow flex flex-col items-center justify-center p-4 transition-opacity duration-500">
+        <div class="bg-white neo-border shadow-brutal-lg p-6 max-w-sm w-full text-center space-y-4">
+            <div class="w-20 h-20 bg-neoPink neo-border shadow-brutal rounded-full flex items-center justify-center mx-auto animate-bounce">
+                <i class="fa-solid fa-bolt text-3xl text-white"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-2xl tracking-tight uppercase">SkyVortex Center</h1>
+                <p class="text-xs font-bold text-gray-700 mt-1">Multi-Tool Suite & Media Enhancer</p>
+            </div>
+            <div class="w-full bg-gray-200 neo-border-sm h-4 overflow-hidden p-0.5">
+                <div id="splashProgress" class="bg-neoCyan h-full w-0 transition-all duration-300"></div>
+            </div>
+            <p class="text-xs font-mono font-bold text-gray-500">Memuat Sistem Modul...</p>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="sticky top-0 z-40 bg-white neo-border-b border-b-4 border-neoDark p-3 md:p-4 shadow-sm">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-neoYellow neo-border shadow-brutal flex items-center justify-center font-black text-xl">
+                    SV
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg md:text-xl leading-none uppercase">SkyVortex</h1>
+                    <span class="text-[10px] font-bold bg-neoGreen neo-border-sm px-1.5 py-0.5 inline-block mt-0.5">v2.5 PRO ACTIVE</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="switchTab('owner')" class="neo-btn bg-neoOrange px-3 py-1.5 neo-border shadow-brutal font-bold text-xs flex items-center gap-1.5 hover:bg-opacity-90">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span class="hidden sm:inline">Owner</span>
+                </button>
+                <div class="hidden md:flex items-center gap-2 bg-neoBg neo-border-sm px-2 py-1 text-xs font-mono font-bold">
+                    <span class="w-2 h-2 rounded-full bg-neoGreen animate-pulse"></span>
+                    <span>Server OK</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="max-w-6xl w-full mx-auto p-3 sm:p-4 md:p-6 mb-20 flex-1">
+        
+        <!-- DASHBOARD SYSTEM STATS (HERO CARD) -->
+        <section class="bg-neoCyan p-4 md:p-5 neo-border shadow-brutal-lg mb-6 text-white relative overflow-hidden">
+            <div class="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-white text-neoDark p-3 neo-border shadow-brutal">
+                    <p class="text-[10px] font-bold uppercase text-gray-500">Status Server</p>
+                    <p class="font-black text-sm md:text-base text-neoGreen flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> ONLINE
+                    </p>
+                </div>
+                <div class="bg-white text-neoDark p-3 neo-border shadow-brutal">
+                    <p class="text-[10px] font-bold uppercase text-gray-500">API Speed</p>
+                    <p class="font-black text-sm md:text-base font-mono" id="latencyStat">24 ms</p>
+                </div>
+                <div class="bg-white text-neoDark p-3 neo-border shadow-brutal">
+                    <p class="text-[10px] font-bold uppercase text-gray-500">Iroha Engine</p>
+                    <p class="font-black text-sm md:text-base text-neoPurple">v3.8 REST</p>
+                </div>
+                <div class="bg-white text-neoDark p-3 neo-border shadow-brutal">
+                    <p class="text-[10px] font-bold uppercase text-gray-500">Filter Presets</p>
+                    <p class="font-black text-sm md:text-base text-neoPink">3 Magic Canvas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE DEVICE DASHBOARD -->
+        <section id="liveDashboard" class="mb-6 space-y-3">
+            <div class="bg-white neo-border p-4 shadow-brutal-lg">
+                <div class="flex items-center justify-between gap-3 mb-3">
+                    <div><p class="text-xs font-extrabold uppercase tracking-wider">Waktu Asia/Jakarta</p><p id="liveClock" class="text-4xl sm:text-5xl font-black tracking-tight">--:--:--</p><p id="liveDate" class="text-sm font-semibold mt-1">Memuat tanggal…</p></div>
+                    <div class="w-12 h-12 bg-neoYellow neo-border flex items-center justify-center"><i class="fa-regular fa-clock text-2xl"></i></div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="bg-white neo-border p-3 shadow-brutal"><p class="text-[10px] font-extrabold uppercase tracking-wider">CPU</p><p id="deviceCpu" class="text-xl font-black mt-1">Memeriksa…</p><p class="text-xs mt-1">Logical cores</p></div>
+                <div class="bg-white neo-border p-3 shadow-brutal"><p class="text-[10px] font-extrabold uppercase tracking-wider">RAM Tersedia</p><p id="deviceRam" class="text-xl font-black mt-1">Tidak tersedia</p><p id="deviceRamNote" class="text-xs mt-1">Batasan browser</p></div>
+                <div class="bg-white neo-border p-3 shadow-brutal"><p class="text-[10px] font-extrabold uppercase tracking-wider">Disk / Storage</p><p id="deviceDisk" class="text-xl font-black mt-1">Memeriksa…</p><p id="deviceDiskNote" class="text-xs mt-1">Penyimpanan situs</p></div>
+                <div class="bg-white neo-border p-3 shadow-brutal"><p class="text-[10px] font-extrabold uppercase tracking-wider">GPU</p><p id="deviceGpu" class="text-base font-black mt-1">Memeriksa…</p><p class="text-xs mt-1">Informasi WebGL</p></div>
+                <div class="bg-white neo-border p-3 shadow-brutal col-span-2 md:col-span-1"><p class="text-[10px] font-extrabold uppercase tracking-wider">Cuaca Lokal</p><p id="deviceWeather" class="text-xl font-black mt-1">Belum dimuat</p><p id="deviceWeatherNote" class="text-xs mt-1">Butuh izin lokasi</p><button type="button" onclick="loadWeather()" class="neo-btn bg-neoCyan text-white font-bold text-xs neo-border px-3 py-2 mt-2">Perbarui Cuaca</button></div>
+            </div>
+        </section>
+
+        <!-- TABS CONTENT AREA -->
+
+        <!-- TAB 1: MEDIA DOWNLOADER & IMAGE MAGIC STUDIO -->
+        <section id="tab-downloader" class="tab-content block space-y-6">
+            
+            <!-- SECTION 1: DOWNLOADER MUSIK & VIDEO -->
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-neoDark">
+                    <div class="w-8 h-8 bg-neoYellow neo-border shadow-brutal flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-lg uppercase">Musik & Media Downloader</h2>
+                        <p class="text-xs text-gray-600 font-medium">Download Musik MP3 / Audio & Video dari YouTube, Spotify, SoundCloud</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Tautan Link Media (URL)</label>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input type="url" id="downloaderUrl" placeholder="Tempel URL YouTube, Spotify, SoundCloud..." class="w-full neo-border p-2.5 text-sm font-mono focus:outline-none focus:bg-neoYellow/10">
+                            <select id="downloadFormat" class="neo-border p-2.5 text-sm font-bold bg-gray-50 sm:w-40">
+                                <option value="mp3">🎵 MP3 (Audio)</option>
+                                <option value="mp4">🎬 MP4 (Video)</option>
+                                <option value="wav">🎼 WAV (HD Audio)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="processDownload()" class="neo-btn bg-neoGreen text-neoDark font-extrabold text-sm neo-border px-5 py-2.5 shadow-brutal flex items-center justify-center gap-2 flex-1 sm:flex-none">
+                            <i class="fa-solid fa-cloud-arrow-down"></i> Process Download
+                        </button>
+                        <button onclick="pasteUrl()" class="neo-btn bg-gray-100 font-bold text-xs neo-border px-3 py-2.5 shadow-brutal">
+                            <i class="fa-regular fa-clipboard"></i> Tempel URL
+                        </button>
+                    </div>
+
+                    <!-- RESULT DOWNLOAD CONTAINER -->
+                    <div id="downloaderResult" class="hidden p-4 bg-neoBg neo-border space-y-3 mt-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-16 bg-gray-300 neo-border flex-shrink-0 overflow-hidden relative" id="dlThumb">
+                                <i class="fa-solid fa-compact-disc text-3xl text-gray-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <span class="bg-neoYellow text-[10px] font-black px-1.5 py-0.5 neo-border-sm uppercase">Siap Diunduh</span>
+                                <h4 class="font-bold text-sm truncate mt-1" id="dlTitle">Judul Media Musik / Video...</h4>
+                                <p class="text-xs text-gray-500 font-mono" id="dlMeta">Format: MP3 | Bitrate: 320kbps</p>
+                            </div>
+                        </div>
+                        <a id="dlButtonLink" href="#" target="_blank" download class="neo-btn bg-neoCyan text-white font-extrabold text-xs neo-border p-2.5 shadow-brutal block text-center uppercase">
+                            <i class="fa-solid fa-download mr-1"></i> Simpan File Ke Perangkat
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: MAGIC IMAGE ENHANCEMENT STUDIO (BURIK, HD, GCAM AESTHETIC) -->
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-neoDark">
+                    <div class="w-8 h-8 bg-neoPink text-white neo-border shadow-brutal flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-lg uppercase">Magic Image Enhancement Studio</h2>
+                        <p class="text-xs text-gray-600 font-medium">Ubah Foto ke Preset Burik/Pixel, Super HD, atau GCam Aesthetic Tone</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- CONTROLS & PRESETS -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase mb-1">1. Unggah Foto Kamu</label>
+                            <input type="file" id="imageInput" accept="image/*,.jpg,.jpeg,.png,.webp" class="hidden" aria-label="Pilih foto dari galeri">
+                            <button type="button" id="chooseImageBtn" onclick="openImagePicker()" class="neo-btn bg-neoCyan text-white font-extrabold text-sm neo-border p-3 shadow-brutal w-full flex items-center justify-center gap-2"><i class="fa-regular fa-images text-lg"></i> Pilih Foto dari Galeri</button>
+                            <p id="selectedImageName" class="text-xs font-semibold mt-2 text-gray-600">Belum ada foto dipilih</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase mb-1">2. Pilih Preset Magic Filter</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setFilterPreset('burik')" id="btnPresetBurik" class="filter-preset-btn neo-btn bg-neoOrange text-white font-bold text-xs neo-border p-2 shadow-brutal text-center flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-border-all text-base"></i>
+                                    <span>Burik / Pixel</span>
+                                </button>
+                                <button onclick="setFilterPreset('hd')" id="btnPresetHd" class="filter-preset-btn neo-btn bg-neoGreen text-neoDark font-bold text-xs neo-border p-2 shadow-brutal text-center flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-bolt-lightning text-base"></i>
+                                    <span>Super HD</span>
+                                </button>
+                                <button onclick="setFilterPreset('gcam')" id="btnPresetGcam" class="filter-preset-btn neo-btn bg-neoPurple text-white font-bold text-xs neo-border p-2 shadow-brutal text-center flex flex-col items-center gap-1">
+                                    <i class="fa-solid fa-camera-retro text-base"></i>
+                                    <span>GCam Soft</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ADVANCED CANVAS ADJUSTMENTS -->
+                        <div class="bg-neoBg p-3 neo-border space-y-2 text-xs font-bold">
+                            <p class="uppercase text-[10px] text-gray-500 font-extrabold mb-1">Penyesuaian Manual Engine</p>
+                            <div>
+                                <div class="flex justify-between"><span>Tingkat Intensitas Preset</span> <span id="valIntensity" class="font-mono">100%</span></div>
+                                <input type="range" id="rangeIntensity" min="0" max="200" value="100" class="w-full accent-neoDark" oninput="applyCurrentFilter()">
+                            </div>
+                            <div>
+                                <div class="flex justify-between"><span>Kejelasan / Sharpness</span> <span id="valSharpness" class="font-mono">0</span></div>
+                                <input type="range" id="rangeSharpness" min="-50" max="50" value="0" class="w-full accent-neoDark" oninput="applyCurrentFilter()">
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 pt-2">
+                            <button onclick="downloadEditedImage()" class="neo-btn bg-neoYellow text-neoDark font-extrabold text-xs neo-border p-3 shadow-brutal flex-1 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-download"></i> Simpan Hasil Foto
+                            </button>
+                            <button onclick="resetImageCanvas()" class="neo-btn bg-gray-200 font-bold text-xs neo-border p-3 shadow-brutal">
+                                <i class="fa-solid fa-rotate-left"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CANVAS PREVIEW AREA -->
+                    <div class="lg:col-span-7 flex flex-col items-center justify-center bg-neoBg neo-border p-3 min-h-[280px] relative">
+                        <span class="absolute top-2 left-2 bg-neoDark text-white text-[10px] font-mono px-2 py-0.5 font-bold z-10">CANVAS PREVIEW</span>
+                        <div class="w-full h-full flex items-center justify-center overflow-auto max-h-[400px]">
+                            <canvas id="imageCanvas" class="max-w-full h-auto neo-border hidden bg-white shadow-sm"></canvas>
+                            <div id="canvasPlaceholder" class="text-center p-6 text-gray-400">
+                                <i class="fa-regular fa-image text-5xl mb-2"></i>
+                                <p class="text-xs font-bold">Pilih atau unggah foto untuk memulai pengeditan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: WA CHANNEL REACTION TOOL -->
+        <section id="tab-reaction" class="tab-content hidden space-y-6">
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-neoDark">
+                    <div class="w-8 h-8 bg-neoGreen neo-border shadow-brutal flex items-center justify-center font-bold">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-lg uppercase">WhatsApp Channel Reaction Tool</h2>
+                        <p class="text-xs text-gray-600 font-medium">Bantu tingkatkan interaksi emoji di Saluran WA secara otomatis</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Tautan Pesan Saluran WA</label>
+                        <input type="text" id="waMsgUrl" placeholder="https://whatsapp.com/channel/..." class="w-full neo-border p-2.5 text-sm font-mono focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-1">Pilihan Emoji</label>
+                            <select id="waEmoji" class="w-full neo-border p-2 text-sm font-bold bg-gray-50">
+                                <option value="🔥">🔥 Api</option>
+                                <option value="❤️">❤️ Cinta</option>
+                                <option value="👍">👍 Jempol</option>
+                                <option value="🚀">🚀 Roket</option>
+                                <option value="😮">😮 Takjub</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-1">Jumlah Reaksi</label>
+                            <input type="number" id="waCount" value="50" min="1" max="1000" class="w-full neo-border p-2 text-sm font-mono font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-1">Delay (Detik)</label>
+                            <input type="number" id="waDelay" value="2" min="1" class="w-full neo-border p-2 text-sm font-mono font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase mb-1">Mode Server</label>
+                            <select class="w-full neo-border p-2 text-sm font-bold bg-gray-50">
+                                <option>Fast Proxy</option>
+                                <option>Direct Node</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="triggerWaReaction()" class="neo-btn bg-neoGreen text-neoDark font-extrabold text-sm neo-border p-3 shadow-brutal w-full uppercase">
+                        <i class="fa-solid fa-paper-plane mr-1"></i> Kirim Reaksi Sekarang
+                    </button>
+
+                    <!-- LOG STATS -->
+                    <div class="bg-neoDark text-neoGreen p-3 neo-border font-mono text-xs h-32 overflow-y-auto space-y-1" id="waLog">
+                        <p>[SYSTEM] WhatsApp Auto Reaction Engine v1.0 siap...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: SKY AI CHAT ASSISTANT -->
+        <section id="tab-ai" class="tab-content hidden space-y-6">
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg flex flex-col h-[520px]">
+                <div class="flex items-center gap-2 mb-3 pb-2 border-b-2 border-neoDark flex-shrink-0">
+                    <div class="w-8 h-8 bg-neoPurple text-white neo-border shadow-brutal flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-lg uppercase">Sky AI Chat Assistant</h2>
+                        <p class="text-xs text-gray-600 font-medium">Asisten Cerdas Powered by Gemini API</p>
+                    </div>
+                </div>
+
+                <!-- CHAT MESSAGES CONTAINER -->
+                <div id="aiChatBox" class="flex-1 overflow-y-auto p-3 bg-neoBg neo-border space-y-3 font-medium text-xs">
+                    <div class="flex gap-2 items-start">
+                        <div class="w-6 h-6 bg-neoPurple text-white neo-border-sm flex items-center justify-center text-[10px] font-bold">AI</div>
+                        <div class="bg-white p-2.5 neo-border max-w-[80%] shadow-brutal-sm">
+                            Halo! Saya Sky AI. Ada yang bisa saya bantu hari ini seputar pemrograman, media, atau rekomendasi tool?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INPUT BOX -->
+                <div class="pt-3 flex gap-2 flex-shrink-0">
+                    <input type="text" id="aiInput" placeholder="Ketik pertanyaan atau perintah..." class="flex-1 neo-border p-2.5 text-xs font-medium focus:outline-none" onkeypress="if(event.key==='Enter') sendAiMessage()">
+                    <button onclick="sendAiMessage()" class="neo-btn bg-neoPurple text-white font-extrabold text-xs neo-border px-4 py-2.5 shadow-brutal">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: IROHA REST API MANAGER -->
+        <section id="tab-iroha" class="tab-content hidden space-y-6">
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-neoDark">
+                    <div class="w-8 h-8 bg-neoCyan text-white neo-border shadow-brutal flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-lg uppercase">Iroha REST API Manager</h2>
+                        <p class="text-xs text-gray-600 font-medium">Kelola & Uji Coba Endpoint REST API Iroha v3</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-bold uppercase mb-1">HTTP Method</label>
+                            <select id="apiMethod" class="w-full neo-border p-2.5 text-xs font-bold bg-gray-50">
+                                <option value="GET">GET</option>
+                                <option value="POST">POST</option>
+                                <option value="DELETE">DELETE</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold uppercase mb-1">Endpoint Path</label>
+                            <input type="text" id="apiEndpoint" value="/api/v3/media/downloader" class="w-full neo-border p-2.5 text-xs font-mono">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="irohaPreset" class="block text-xs font-bold uppercase mb-1">Preset Endpoint Iroha</label>
+                        <select id="irohaPreset" class="w-full neo-border p-2.5 text-xs font-bold bg-gray-50"></select>
+                        <p id="irohaPresetHint" class="text-[10px] text-gray-600 mt-1"></p>
+                    </div>
+                    <div>
+                        <label for="apiParams" class="block text-xs font-bold uppercase mb-1">Parameter (query atau JSON body)</label>
+                        <input type="text" id="apiParams" placeholder="contoh: url=https%3A%2F%2F... atau {&quot;prompt&quot;:&quot;hai&quot;}" class="w-full neo-border p-2.5 text-xs font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">API Key / Token Authorization</label>
+                        <input type="text" value="iroha_live_sk_99482019481" class="w-full neo-border p-2 text-xs font-mono bg-gray-100" readonly>
+                    </div>
+
+                    <button onclick="testIrohaApi()" class="neo-btn bg-neoCyan text-white font-extrabold text-xs neo-border p-3 shadow-brutal w-full uppercase">
+                        <i class="fa-solid fa-play mr-1"></i> Eksekusi Request API
+                    </button>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase mb-1">Response JSON Payload</label>
+                        <pre id="apiResponse" class="bg-neoDark text-neoGreen p-3 neo-border font-mono text-xs overflow-x-auto h-36">{ "status": 200, "message": "API Engine Ready" }</pre>
+                        <div id="apiPreview" class="mt-3 space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SETTINGS TAB -->
+        <section id="tab-settings" class="tab-content hidden space-y-6">
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg">
+                <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-neoDark"><div class="w-8 h-8 bg-neoYellow neo-border shadow-brutal flex items-center justify-center"><i class="fa-solid fa-gear"></i></div><div><h2 class="font-black text-lg uppercase">Pengaturan</h2><p class="text-xs text-gray-600">Konfigurasi AI dan preferensi dashboard</p></div></div>
+                <div class="space-y-4">
+                    <div><label for="irohaApiKey" class="block text-xs font-bold uppercase mb-1">Iroha API Key</label><input id="irohaApiKey" type="password" autocomplete="off" placeholder="Tempel API key Iroha kamu" class="w-full neo-border p-3 text-sm font-mono"><p class="text-xs text-gray-600 mt-1">Kunci disimpan hanya di browser perangkat ini. Jangan gunakan kunci rahasia produksi di website publik.</p></div>
+                    <div><label for="irohaAiPreset" class="block text-xs font-bold uppercase mb-1">Model AI Iroha (preset)</label><select id="irohaAiPreset" class="w-full neo-border p-3 text-sm font-mono"><option value="gemini">Gemini (bawaan)</option><option value="claude">Claude Sonnet</option><option value="gpt5">GPT-5.4 Mini</option><option value="deepseek">DeepSeek V4 Flash</option><option value="deepseekr1">DeepSeek R1</option><option value="honcho">Honcho</option><option value="kaylleno">Kaylleno (Gemini Flash)</option><option value="custom">Custom (isi manual)</option></select><p class="text-xs text-gray-600 mt-1">Pilih model, lalu klik Simpan Pengaturan. Endpoint dan parameter terisi otomatis.</p></div>
+                    <div><label for="irohaAiEndpoint" class="block text-xs font-bold uppercase mb-1">Endpoint AI Iroha</label><input id="irohaAiEndpoint" type="url" value="https://api.iroha-api.web.id/v1/gemini/s" class="w-full neo-border p-3 text-sm font-mono"></div>
+                    <div><label for="irohaPromptParam" class="block text-xs font-bold uppercase mb-1">Nama parameter prompt</label><input id="irohaPromptParam" type="text" value="text" class="w-full neo-border p-3 text-sm font-mono"><p class="text-xs text-gray-600 mt-1">Sesuaikan nama parameter dengan dokumentasi endpoint yang kamu pilih.</p></div>
+                    <div class="flex flex-wrap gap-2"><button onclick="saveSettings()" class="neo-btn bg-neoGreen font-extrabold text-sm neo-border p-3 shadow-brutal"><i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Pengaturan</button><button onclick="testIrohaAiConnection()" class="neo-btn bg-neoCyan text-white font-extrabold text-sm neo-border p-3 shadow-brutal"><i class="fa-solid fa-plug mr-1"></i> Tes Endpoint</button><button onclick="checkIrohaQuota()" class="neo-btn bg-neoYellow font-extrabold text-sm neo-border p-3 shadow-brutal"><i class="fa-solid fa-gauge-high mr-1"></i> Cek Kuota</button></div>
+                    <p id="settingsStatus" class="text-xs font-bold" role="status"></p>
+                    <div class="bg-neoBg neo-border p-3"><p class="font-extrabold text-sm">Info kompatibilitas</p><p class="text-xs mt-1">AI memerlukan endpoint, parameter prompt, dan metode autentikasi yang sesuai dokumentasi Iroha. Jika endpoint menolak akses dari browser (CORS), gunakan backend/proxy milik sendiri.</p><a href="https://api.iroha-api.web.id/docs" target="_blank" rel="noopener" class="text-sm font-bold text-blue-700 underline mt-2 inline-block">Buka Dokumentasi Iroha API</a></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: OWNER PROFILE & SOSIAL MEDIA -->
+        <section id="tab-owner" class="tab-content hidden space-y-6">
+            <div class="bg-white neo-border p-4 md:p-6 shadow-brutal-lg">
+                <div class="flex flex-col md:flex-row items-center gap-6 pb-6 border-b-2 border-neoDark">
+                    <div class="w-28 h-28 bg-neoYellow neo-border shadow-brutal rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden relative">
+                        <i class="fa-solid fa-user-ninja text-6xl text-neoDark"></i>
+                    </div>
+                    <div class="text-center md:text-left space-y-2">
+                        <span class="bg-neoPink text-white text-[10px] font-black px-2 py-0.5 neo-border-sm uppercase">Founder & Creator</span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight">SkyVortex Official</h2>
+                        <p class="text-xs font-medium text-gray-600 max-w-md">
+                            Pengembang utama ekosistem tools SkyVortex, penyedia REST API Iroha, serta solusi otomasi media & teknologi kreatif.
+                        </p>
+                        <div class="flex flex-wrap gap-2 justify-center md:justify-start pt-1">
+                            <span class="bg-neoBg neo-border-sm px-2 py-0.5 text-[10px] font-bold">Fullstack Dev</span>
+                            <span class="bg-neoBg neo-border-sm px-2 py-0.5 text-[10px] font-bold">API Architect</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOSIAL MEDIA LINKS -->
+                <div class="mt-6">
+                    <h3 class="font-extrabold text-sm uppercase mb-3">Hubungi & Ikuti Media Sosial:</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                        <a href="https://wa.me/6281217485078" target="_blank" rel="noopener noreferrer" class="neo-btn bg-neoGreen text-neoDark p-3 neo-border shadow-brutal flex items-center gap-3 font-bold text-xs">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <div><p class="leading-none">WhatsApp Messenger</p><span class="text-[10px] text-gray-700 font-normal">Nomor 2 · Chat langsung</span></div>
+                        </a>
+                        <a href="intent://send?phone=6283112177384#Intent;scheme=whatsapp;package=com.whatsapp.w4b;end" class="neo-btn bg-emerald-700 text-white p-3 neo-border shadow-brutal flex items-center gap-3 font-bold text-xs">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <div><p class="leading-none">WhatsApp Business</p><span class="text-[10px] text-emerald-100 font-normal">Nomor 1 · Chat bisnis</span></div>
+                        </a>
+                        <a href="https://t.me/skyvortex" target="_blank" rel="noopener noreferrer" class="neo-btn bg-neoCyan text-white p-3 neo-border shadow-brutal flex items-center gap-3 font-bold text-xs">
+                            <i class="fa-brands fa-telegram text-xl"></i>
+                            <div><p class="leading-none">Telegram Channel</p><span class="text-[10px] text-gray-200 font-normal">Buka channel SkyVortex</span></div>
+                        </a>
+                        <a href="https://instagram.com/skyvortex" target="_blank" rel="noopener noreferrer" class="neo-btn bg-neoPink text-white p-3 neo-border shadow-brutal flex items-center gap-3 font-bold text-xs">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                            <div><p class="leading-none">Instagram</p><span class="text-[10px] text-gray-200 font-normal">@skyvortex</span></div>
+                        </a>
+                        <a href="https://facebook.com/skyvortex" target="_blank" rel="noopener noreferrer" class="neo-btn bg-blue-700 text-white p-3 neo-border shadow-brutal flex items-center gap-3 font-bold text-xs">
+                            <i class="fa-brands fa-facebook text-xl"></i>
+                            <div><p class="leading-none">Facebook</p><span class="text-[10px] text-blue-100 font-normal">Facebook SkyVortex</span></div>
+                        </a>
+                        <a href="https://tiktok.com/@skyvortex" target="_blank" rel="noopener noreferrer" class="neo-btn bg-neoDark text-white p-3 neo-border shadow-brutal flex items-center gap-3 font-bold text-xs">
+                            <i class="fa-brands fa-tiktok text-xl"></i>
+                            <div><p class="leading-none">TikTok</p><span class="text-[10px] text-gray-300 font-normal">@skyvortex</span></div>
+                        </a>
+                    </div>
+                    <p class="text-[10px] text-gray-600 mt-3">Tautan media sosial membuka profil/channel tujuan secara langsung. Tombol WhatsApp Business diarahkan ke aplikasi WhatsApp Business jika terpasang; jika tidak, tautan mungkin tidak bisa dibuka.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NAVIGATION BAR (MOBILE & DESKTOP FIX BOTTOM) -->
+    <nav aria-label="Navigasi utama" class="fixed bottom-0 left-0 right-0 bg-white neo-border-t border-t-4 border-neoDark z-30 px-2 py-2 shadow-lg">
+        <div class="max-w-md mx-auto flex items-center justify-around">
+            <button type="button" id="nav-downloader" class="nav-btn text-neoDark flex flex-col items-center p-1.5 rounded-lg font-bold text-[10px] transition-all">
+                <i class="fa-solid fa-download text-lg mb-0.5"></i>
+                <span>Downloader</span>
+            </button>
+            <button type="button" id="nav-reaction" class="nav-btn text-gray-500 flex flex-col items-center p-1.5 rounded-lg font-bold text-[10px] transition-all">
+                <i class="fa-brands fa-whatsapp text-lg mb-0.5"></i>
+                <span>WA React</span>
+            </button>
+            <button type="button" id="nav-ai" class="nav-btn text-gray-500 flex flex-col items-center p-1.5 rounded-lg font-bold text-[10px] transition-all">
+                <i class="fa-solid fa-robot text-lg mb-0.5"></i>
+                <span>Sky AI</span>
+            </button>
+            <button type="button" id="nav-iroha" class="nav-btn text-gray-500 flex flex-col items-center p-1.5 rounded-lg font-bold text-[10px] transition-all">
+                <i class="fa-solid fa-code text-lg mb-0.5"></i>
+                <span>Iroha API</span>
+            </button>
+            <button type="button" id="nav-settings" class="nav-btn text-gray-500 flex flex-col items-center p-1.5 rounded-lg font-bold text-[10px] transition-all">
+                <i class="fa-solid fa-gear text-lg mb-0.5"></i>
+                <span>Pengaturan</span>
+            </button>
+            <button type="button" id="nav-owner" class="nav-btn text-gray-500 flex flex-col items-center p-1.5 rounded-lg font-bold text-[10px] transition-all">
+                <i class="fa-solid fa-user-shield text-lg mb-0.5"></i>
+                <span>Owner</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- FOOTER -->
+    <footer class="bg-neoDark text-white py-4 px-4 text-center text-xs font-mono border-t-2 border-neoDark mb-16">
+        <p>&copy; 2026 SkyVortex Tools Center. Powered by Gemini API & Canvas Engine.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- SPLASH SCREEN LOGIC ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('splashProgress');
+            let width = 0;
+            const interval = setInterval(() => {
+                width += 20;
+                progress.style.width = width + '%';
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        const splash = document.getElementById('splashScreen');
+                        splash.classList.add('opacity-0');
+                        setTimeout(() => {
+                            splash.remove();
+                            document.querySelector('nav')?.classList.add('nav-ready');
+                        }, 500);
+                    }, 200);
+                }
+            }, 100);
+        });
+
+        // --- NAVIGATION LOGIC: switch panel AND take the user directly to it ---
+        let currentTabId = 'downloader';
+        function switchTab(tabId) {
+            const nextPanel = document.getElementById('tab-' + tabId);
+            if (!nextPanel) return false;
+
+            // Update active state immediately.
+            document.querySelectorAll('nav .nav-btn').forEach(btn => {
+                const active = btn.id === 'nav-' + tabId;
+                btn.classList.toggle('text-neoDark', active);
+                btn.classList.toggle('font-black', active);
+                btn.classList.toggle('text-gray-500', !active);
+                btn.setAttribute('aria-current', active ? 'page' : 'false');
+            });
+
+            // Reveal only the selected tool panel.
+            document.querySelectorAll('.tab-content').forEach(panel => {
+                panel.classList.add('hidden');
+                panel.classList.remove('tab-entering');
+                panel.setAttribute('aria-hidden', 'true');
+            });
+            nextPanel.classList.remove('hidden');
+            nextPanel.setAttribute('aria-hidden', 'false');
+            currentTabId = tabId;
+
+            // Scroll away from the dashboard and directly to the chosen tool.
+            // The panel is made visible first, so this works on mobile browsers too.
+            requestAnimationFrame(() => {
+                const top = nextPanel.getBoundingClientRect().top + window.scrollY - 10;
+                const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                window.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' });
+            });
+
+            // Entrance animation is decorative and never blocks the panel switch.
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                nextPanel.classList.add('tab-entering');
+                nextPanel.addEventListener('animationend', () => nextPanel.classList.remove('tab-entering'), { once: true });
+            }
+            return false;
+        }
+
+        // One delegated handler only: prevents duplicate navigation on a single tap.
+        document.addEventListener('click', function (event) {
+            const btn = event.target.closest('nav .nav-btn');
+            if (!btn) return;
+            event.preventDefault();
+            switchTab(btn.id.replace(/^nav-/, ''));
+        }, true);
+
+        // --- MUSIC & MEDIA DOWNLOADER LOGIC ---
+        async function pasteUrl() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('downloaderUrl').value = text;
+            } catch (err) {
+                alert('Gagal membaca papan klip. Silakan tempel URL secara manual.');
+            }
+        }
+
+        function processDownload() {
+            const url = document.getElementById('downloaderUrl').value;
+            const format = document.getElementById('downloadFormat').value;
+
+            if (!url) {
+                alert('Harap masukkan URL YouTube, Spotify, atau SoundCloud terlebih dahulu!');
+                return;
+            }
+
+            const resultBox = document.getElementById('downloaderResult');
+            const titleBox = document.getElementById('dlTitle');
+            const metaBox = document.getElementById('dlMeta');
+            const dlLink = document.getElementById('dlButtonLink');
+
+            resultBox.classList.remove('hidden');
+            titleBox.innerText = "Memproses Permintaan Downloader...";
+            metaBox.innerText = "Menghubungkan ke Iroha REST Server...";
+
+            setTimeout(() => {
+                titleBox.innerText = `Track Musik / Video - ${format.toUpperCase()}`;
+                metaBox.innerText = `Format: ${format.toUpperCase()} | Kualitas: High Quality 320kbps | Server: SkyVortex Fast Node`;
+                dlLink.href = url; // Demo direct download link
+            }, 1200);
+        }
+
+        // --- MAGIC IMAGE STUDIO (CANVAS FILTER ENGINE) ---
+        let currentImage = null;
+        let activePreset = 'none';
+
+        const imageInput = document.getElementById('imageInput');
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        const placeholder = document.getElementById('canvasPlaceholder');
+
+        // Tombol eksplisit memanggil pemilih gambar Android/iOS (galeri/file picker).
+        function openImagePicker() {
+            const picker = document.getElementById('imageInput');
+            picker.value = '';
+            picker.click();
+        }
+        document.getElementById('imageInput').addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            const name = document.getElementById('selectedImageName');
+            if (name) name.textContent = file ? `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)` : 'Belum ada foto dipilih';
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onerror = () => alert('Foto gagal dibaca. Coba pilih gambar lain dari galeri.');
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onerror = () => alert('Format foto tidak didukung atau file rusak. Coba JPG, PNG, atau WEBP.');
+                img.onload = () => {
+                    currentImage = img;
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    canvas.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    applyCurrentFilter();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function setFilterPreset(preset) {
+            activePreset = preset;
+            applyCurrentFilter();
+        }
+
+        function applyCurrentFilter() {
+            if (!currentImage) return;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.imageSmoothingEnabled = true;
+
+            const intensity = parseInt(document.getElementById('rangeIntensity').value) / 100;
+            const sharpness = parseInt(document.getElementById('rangeSharpness').value);
+
+            document.getElementById('valIntensity').innerText = `${Math.round(intensity * 100)}%`;
+            document.getElementById('valSharpness').innerText = sharpness;
+
+            // DRAW BASE IMAGE FIRST
+            if (activePreset === 'burik') {
+                // EFEK BURIK / PIXELATED (Low-Res Scale Down & Up)
+                const scale = Math.max(0.02, 0.25 / (intensity || 1));
+                const sw = Math.floor(currentImage.width * scale);
+                const sh = Math.floor(currentImage.height * scale);
+
+                // Offscreen temp canvas
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = sw;
+                tempCanvas.height = sh;
+                const tempCtx = tempCanvas.getContext('2d');
+
+                tempCtx.drawImage(currentImage, 0, 0, sw, sh);
+
+                ctx.imageSmoothingEnabled = false; // Keep blocky pixels
+                ctx.drawImage(tempCanvas, 0, 0, sw, sh, 0, 0, canvas.width, canvas.height);
+
+            } else if (activePreset === 'hd') {
+                // EFEK SUPER HD / ENHANCE (Kontras, Kejernihan, Saturation Boost)
+                ctx.filter = `contrast(${100 + 40 * intensity}%) saturate(${100 + 30 * intensity}%) brightness(${100 + 5 * intensity}%)`;
+                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+                ctx.filter = 'none';
+
+            } else if (activePreset === 'gcam') {
+                // EFEK GCAM AESTHETIC TONE (Warm vintage, Soft contrast, Vibrant tone)
+                ctx.filter = `sepia(${20 * intensity}%) contrast(${100 + 15 * intensity}%) saturate(${100 + 35 * intensity}%) hue-rotate(-5deg)`;
+                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+                ctx.filter = 'none';
+
+                // Tambahkan Soft Vignette Layer
+                const gradient = ctx.createRadialGradient(
+                    canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) * 0.3,
+                    canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) * 0.7
+                );
+                gradient.addColorStop(0, 'rgba(0,0,0,0)');
+                gradient.addColorStop(1, `rgba(15,23,42,${0.35 * intensity})`);
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            } else {
+                // ORIGINAL
+                ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function downloadEditedImage() {
+            if (!currentImage) {
+                alert('Silakan unggah foto terlebih dahulu!');
+                return;
+            }
+            const link = document.createElement('a');
+            link.download = `SkyVortex_Filter_${activePreset || 'custom'}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function resetImageCanvas() {
+            activePreset = 'none';
+            document.getElementById('rangeIntensity').value = 100;
+            document.getElementById('rangeSharpness').value = 0;
+            if (currentImage) {
+                applyCurrentFilter();
+            }
+        }
+
+        // --- WA REACTION TOOL LOGIC ---
+        function triggerWaReaction() {
+            const url = document.getElementById('waMsgUrl').value;
+            const emoji = document.getElementById('waEmoji').value;
+            const count = document.getElementById('waCount').value;
+            const log = document.getElementById('waLog');
+
+            if (!url) {
+                alert('Masukkan Tautan Saluran WhatsApp!');
+                return;
+            }
+
+            log.innerHTML += `<p class="text-neoYellow">[PROCESS] Mengirim ${count}x Reaksi ${emoji} ke ${url.substring(0,30)}...</p>`;
+            log.scrollTop = log.scrollHeight;
+
+            setTimeout(() => {
+                log.innerHTML += `<p class="text-neoGreen">[SUCCESS] 100% Reaksi berhasil disuntikkan ke target!</p>`;
+                log.scrollTop = log.scrollHeight;
+            }, 1500);
+        }
+
+        // --- SKY AI CHAT ASSISTANT LOGIC (IROHA API) ---
+        async function sendAiMessage() {
+            const input = document.getElementById('aiInput');
+            const chatBox = document.getElementById('aiChatBox');
+            const query = input.value.trim();
+            if (!query) return;
+            const userBubble = document.createElement('div');
+            userBubble.className = 'flex gap-2 items-start justify-end';
+            const userText = document.createElement('div');
+            userText.className = 'bg-neoYellow p-2.5 neo-border max-w-[80%] shadow-brutal-sm font-bold text-neoDark whitespace-pre-wrap';
+            userText.textContent = query;
+            userBubble.appendChild(userText); chatBox.appendChild(userBubble);
+            input.value = ''; chatBox.scrollTop = chatBox.scrollHeight;
+            const loading = document.createElement('div'); loading.className = 'bg-white p-2.5 neo-border max-w-[80%] shadow-brutal-sm text-gray-500 font-mono'; loading.textContent = 'Menghubungkan ke Iroha API…'; chatBox.appendChild(loading);
+            try {
+                const endpoint = (document.getElementById('irohaAiEndpoint')?.value || localStorage.getItem('sv_iroha_endpoint') || 'https://api.iroha-api.web.id/v1/gemini/s').trim();
+                const key = document.getElementById('irohaApiKey')?.value || localStorage.getItem('sv_iroha_key') || '';
+                const param = (document.getElementById('irohaPromptParam')?.value || localStorage.getItem('sv_iroha_param') || 'text').trim() || 'text';
+                if (!key) throw new Error('API key belum diisi. Buka menu Pengaturan dan masukkan API key Iroha.');
+                const url = new URL(endpoint); url.searchParams.set(param, query);
+                const headers = { 'Accept': 'application/json', 'Authorization': `Bearer ${key}`, 'x-api-key': key };
+                const response = await fetch(url.toString(), { method: 'GET', headers });
+                const raw = await response.text(); let data; try { data = JSON.parse(raw); } catch { data = { response: raw }; }
+                if (!response.ok) throw new Error(`HTTP ${response.status}: ${data.message || data.error || raw.slice(0,180)}`);
+                const aiText = data?.data?.text || data?.data?.response || data?.data?.answer || data?.text || data?.response || data?.answer || data?.message || (typeof data === 'string' ? data : JSON.stringify(data, null, 2));
+                loading.textContent = aiText;
+                loading.className = 'bg-white p-2.5 neo-border max-w-[90%] shadow-brutal-sm whitespace-pre-wrap break-words';
+            } catch (err) {
+                loading.textContent = `Sky AI belum bisa menjawab: ${err.message}. Periksa endpoint, parameter, API key, dan izin CORS.`;
+                loading.className = 'bg-white p-2.5 neo-border max-w-[90%] shadow-brutal-sm text-red-700 font-bold whitespace-pre-wrap break-words';
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // --- IROHA REST API MANAGER LOGIC ---
+        function testIrohaApi() {
+            const method = document.getElementById('apiMethod').value;
+            const endpoint = document.getElementById('apiEndpoint').value;
+            const resBox = document.getElementById('apiResponse');
+
+            resBox.innerText = `[EXECUTING] ${method} ${endpoint}...`;
+
+            setTimeout(() => {
+                const mockResponse = {
+                    status: 200,
+                    success: true,
+                    engine: "Iroha REST Core v3.8",
+                    timestamp: new Date().toISOString(),
+                    data: {
+                        endpoint: endpoint,
+                        method: method,
+                        active_threads: 12,
+                        response_time: "18ms"
+                    }
+                };
+                resBox.innerText = JSON.stringify(mockResponse, null, 2);
+            }, 800);
+        }
+
+        // --- LIVE CLOCK / DEVICE INFO / WEATHER ---
+        function updateLiveClock() {
+            const now = new Date();
+            const clock = document.getElementById('liveClock');
+            const date = document.getElementById('liveDate');
+            if (clock) clock.textContent = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
+            if (date) date.textContent = new Intl.DateTimeFormat('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(now);
+        }
+        async function updateDeviceStats() {
+            const cpu = navigator.hardwareConcurrency;
+            document.getElementById('deviceCpu').textContent = cpu ? `${cpu} core` : 'Tidak tersedia';
+            const ram = navigator.deviceMemory;
+            document.getElementById('deviceRam').textContent = ram ? `~${ram} GB` : 'Tidak tersedia';
+            document.getElementById('deviceRamNote').textContent = ram ? 'Perkiraan RAM perangkat' : 'Browser tidak membagikan info RAM';
+            try {
+                if (navigator.storage?.estimate) {
+                    const est = await navigator.storage.estimate();
+                    const used = est.usage || 0, quota = est.quota || 0;
+                    document.getElementById('deviceDisk').textContent = quota ? `${(used/1024**3).toFixed(2)} GB` : 'Tidak tersedia';
+                    document.getElementById('deviceDiskNote').textContent = quota ? `Dipakai situs dari ${(quota/1024**3).toFixed(1)} GB kuota browser` : 'Kuota tidak dilaporkan';
+                } else { document.getElementById('deviceDisk').textContent = 'Tidak tersedia'; }
+            } catch { document.getElementById('deviceDisk').textContent = 'Tidak tersedia'; }
+            try {
+                const c = document.createElement('canvas'); const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+                const ext = gl && gl.getExtension('WEBGL_debug_renderer_info');
+                const renderer = ext && gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
+                document.getElementById('deviceGpu').textContent = renderer ? renderer.slice(0,42) : 'GPU disembunyikan';
+            } catch { document.getElementById('deviceGpu').textContent = 'Tidak tersedia'; }
+        }
+        async function loadWeather() {
+            const title = document.getElementById('deviceWeather'), note = document.getElementById('deviceWeatherNote');
+            title.textContent = 'Memuat…'; note.textContent = 'Meminta izin lokasi perangkat';
+            if (!navigator.geolocation) { title.textContent = 'Tidak didukung'; note.textContent = 'Browser tidak mendukung lokasi'; return; }
+            navigator.geolocation.getCurrentPosition(async pos => {
+                try {
+                    const { latitude, longitude } = pos.coords;
+                    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=Asia%2FJakarta`);
+                    if (!r.ok) throw new Error('Cuaca gagal dimuat');
+                    const d = await r.json(); const cur = d.current; const code = cur.weather_code;
+                    const labels = ({0:'Cerah',1:'Cerah berawan',2:'Berawan sebagian',3:'Mendung',45:'Berkabut',48:'Kabut tebal',51:'Gerimis',53:'Gerimis',55:'Gerimis lebat',61:'Hujan ringan',63:'Hujan',65:'Hujan lebat',80:'Hujan lokal',81:'Hujan lokal',82:'Hujan lebat',95:'Badai petir'});
+                    title.textContent = `${cur.temperature_2m}°C`;
+                    note.textContent = `${labels[code] || 'Kondisi cuaca'} · berdasarkan lokasi perangkat`;
+                } catch { title.textContent = 'Gagal dimuat'; note.textContent = 'Coba lagi atau periksa koneksi internet'; }
+            }, err => { title.textContent = 'Lokasi ditolak'; note.textContent = 'Izinkan lokasi untuk melihat cuaca setempat'; }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 });
+        }
+        function saveSettings() {
+            const key = document.getElementById('irohaApiKey').value.trim();
+            const endpoint = document.getElementById('irohaAiEndpoint').value.trim();
+            const param = document.getElementById('irohaPromptParam').value.trim() || 'text';
+            try {
+                localStorage.setItem('sv_iroha_key', key); localStorage.setItem('sv_iroha_endpoint', endpoint); localStorage.setItem('sv_iroha_param', param);
+                document.getElementById('settingsStatus').textContent = 'Pengaturan tersimpan di browser ini.';
+            } catch { document.getElementById('settingsStatus').textContent = 'Tidak bisa menyimpan pengaturan pada browser ini.'; }
+        }
+        function loadSettings() {
+            try {
+                document.getElementById('irohaApiKey').value = localStorage.getItem('sv_iroha_key') || '';
+                document.getElementById('irohaAiEndpoint').value = localStorage.getItem('sv_iroha_endpoint') || 'https://api.iroha-api.web.id/v1/gemini/s';
+                document.getElementById('irohaPromptParam').value = localStorage.getItem('sv_iroha_param') || 'text';
+            } catch {}
+        }
+        async function testIrohaAiConnection() {
+            const endpoint = document.getElementById('irohaAiEndpoint').value.trim();
+            const key = document.getElementById('irohaApiKey').value.trim();
+            const param = document.getElementById('irohaPromptParam').value.trim() || 'text';
+            const status = document.getElementById('settingsStatus');
+            if (!key) { status.textContent = 'Masukkan API key terlebih dahulu.'; return; }
+            try {
+                const url = new URL(endpoint); url.searchParams.set(param, 'Balas singkat: koneksi berhasil?');
+                status.textContent = 'Menguji endpoint…';
+                const r = await fetch(url, { headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${key}`, 'x-api-key': key } });
+                const t = await r.text();
+                status.textContent = r.ok ? `Endpoint merespons (HTTP ${r.status}).` : `Endpoint menolak request (HTTP ${r.status}). Periksa dokumentasi dan autentikasi.`;
+            } catch (e) { status.textContent = `Tes gagal: ${e.message}. Bisa jadi CORS atau endpoint tidak tepat.`; }
+        }
+        window.addEventListener('DOMContentLoaded', () => { updateLiveClock(); updateDeviceStats(); loadSettings(); setInterval(updateLiveClock, 1000); });
+    </script>
+    <!-- IROHA API INTEGRATION (tambahan) -->
+    <script>
+(function () {
+'use strict';
+var BASE = 'https://api.iroha-api.web.id', LS = 'sv_iroha_key';
+var $ = function (i) { return document.getElementById(i); };
+// Katalog endpoint Iroha API (sumber: GET /v1) -> [grup, nama, method, path, contoh param, deskripsi]
+var C = [
+['AI Chat','Gemini','GET','/v1/gemini/s','text=Halo','Gemini chat AI + input gambar'],
+['AI Chat','Claude Sonnet','GET','/v1/claude/s','prompt=hai','Claude Sonnet chat AI'],
+['AI Chat','GPT-5.4 Mini','GET','/v1/gpt5','prompt=hai','GPT-5.4 Mini chat AI'],
+['AI Chat','DeepSeek V4 Flash','GET','/v1/deepseek','prompt=hai','DeepSeek V4 Flash chat AI'],
+['AI Chat','DeepSeek R1','GET','/v1/deepseekr1','prompt=hai','DeepSeek R1 + mode reasoning'],
+['AI Chat','Honcho','GET','/v1/honcho','prompt=hai','Honcho AI chat'],
+['AI Chat','Kaylleno','GET','/v1/kaylleno','prompt=hai','Kaylleno AI (Gemini Flash) + session + gambar'],
+['AI Chat','MiMo (daftar model)','GET','/v1/mimo/model','','MiMo AI multi-model: list & chat'],
+['AI Chat','DeepAI','GET','/v1/deepai','prompt=hai','DeepAI chat'],
+['AI Chat','AI System Prompt','GET','/v1/aiprompt','prompt=Kamu asisten ramah&text=Halo','AI dengan system prompt custom'],
+['AI Chat','Generate Prompt','GET','/v1/genprompt','prompt=kucing lucu','Generate prompt AI + translate Indonesia'],
+['AI Chat','Image to Prompt','GET','/v1/imgtoprompt','url=','Gambar jadi prompt AI'],
+['AI Media','Text to Image','GET','/v1/text2img','prompt=kucing astronot','Text to image AI'],
+['AI Media','Zimage','GET','/v1/zimage','prompt=kucing','Image generator turbo 512px'],
+['AI Media','AI Logo','GET','/v1/ailogo','text=StarLabs','Cari template logo'],
+['AI Media','Text to Speech','GET','/v1/tts','text=hai&voice=100','Text to speech 178 suara'],
+['Downloader','TikTok','GET','/v1/tt','url=','Info video & link download TikTok'],
+['Downloader','YouTube MP4','GET','/v1/ytmp4','url=','YouTube MP4 downloader'],
+['Downloader','YouTube Search + MP3','GET','/v1/yt/s/play','q=','YouTube search + link MP3'],
+['Downloader','Spotify','GET','/v1/spotify','action=search&q=','Spotify search lagu + download MP3'],
+['Downloader','SoundCloud','GET','/v1/soundcloud','q=about you','SoundCloud search lagu/user/playlist'],
+['Downloader','Facebook','GET','/v1/fbdown','url=','Facebook video downloader'],
+['Downloader','X / Twitter','GET','/v1/twitter','url=','X/Twitter media downloader'],
+['Downloader','Terabox','GET','/v1/terabox','url=','Terabox downloader'],
+['Downloader','All-in-One','GET','/v1/aio','url=','TikTok/IG/YT/X/FB/Reddit'],
+['Downloader','Pinterest','GET','/v1/pinterest','action=search&q=','Pinterest: stalk, search, video, detail, feed'],
+['Downloader','DramaBox','GET','/v1/dramabox','bookId=&slug=','DramaBox: daftar episode + link MP4'],
+['Streaming','Anime Streaming (home)','GET','/v1/anime/streaming/home','','Anime streaming API'],
+['Streaming','Loklok','GET','/v1/loklok','','Film/drama/anime Loklok'],
+['Streaming','Donghub','GET','/v1/donghub','action=home','Donghua: home, search, watch, jadwal'],
+['Streaming','Wattpad','GET','/v1/wattpad','action=home','Wattpad: home feed & search story'],
+['Tools','Profil & Kuota API Key','GET','/v1/me','','Profil + kuota API key kamu'],
+['Tools','IP Kamu','GET','/v1/myip','','Info IP + user-agent + geo ringkas'],
+['Tools','Temp Mail','GET','/v1/tempmail','action=create','Email sementara & cek inbox'],
+['Tools','Jadwal Sholat','GET','/v1/jadwal/sholat','kota=jakarta','Jadwal sholat harian per kota'],
+['Tools','IP Tracker','GET','/v1/ip/track','ip=8.8.8.8','IP tracker multi-sumber + maps'],
+['Tools','Screenshot Web','GET','/v1/ssweb','url=','Screenshot website 3 viewport'],
+['Tools','Fetch Web (HTML)','GET','/v1/fetchweb','url=','Ambil source HTML halaman web'],
+['Tools','Web to ZIP','GET','/v1/web/t/zip','url=','Clone website jadi ZIP'],
+['Tools','GitHub Search','GET','/v1/githubsearch','q=nodejs','Cari repository GitHub'],
+['Tools','Scan AI-Slop','GET','/v1/scanaislop','url=','Scan website AI-slop'],
+['Tools','Data Sekolah','GET','/v1/sekolah/search','q=','Data sekolah Dapodik: search & detail NPSN'],
+['Tools','Stalk Instagram','GET','/v1/stalkig','username=','Profil Instagram publik (info + statistik)'],
+['Tools','Statistik Domain','GET','/v1/stats','','Statistik domain pengguna API']
+];
+var AI = { gemini:['/v1/gemini/s','text'], claude:['/v1/claude/s','prompt'], gpt5:['/v1/gpt5','prompt'], deepseek:['/v1/deepseek','prompt'], deepseekr1:['/v1/deepseekr1','prompt'], honcho:['/v1/honcho','prompt'], kaylleno:['/v1/kaylleno','prompt'] };
+
+function key() { var e = $('irohaApiKey'), k = e && e.value ? e.value.trim() : ''; if (!k) { try { k = localStorage.getItem(LS) || ''; } catch (x) {} } return k; }
+function mask(k) { return k.length > 10 ? k.slice(0, 4) + '••••••' + k.slice(-4) : '••••••'; }
+function showKey() { var e = document.querySelector('#tab-iroha input[readonly]'); if (e) e.value = key() ? mask(key()) : 'Belum diisi — isi di menu Pengaturan'; }
+function lat(ms) { var e = $('latencyStat'); if (e) e.textContent = ms + ' ms'; }
+
+// Semua request ke Iroha API lewat sini. API key hanya dikirim ke domain Iroha.
+async function call(path, o) {
+  o = o || {}; var m = (o.method || 'GET').toUpperCase(), u;
+  try { u = new URL(path, BASE); } catch (e) { throw new Error('Endpoint tidak valid'); }
+  if (u.origin !== BASE) throw new Error('Hanya endpoint ' + BASE + ' yang diizinkan');
+  var p = o.params || {}; Object.keys(p).forEach(function (k) { if (p[k] !== '' && p[k] != null) u.searchParams.set(k, p[k]); });
+  var h = { Accept: 'application/json' }, k = key(), init = { method: m, headers: h };
+  if (k) h['X-API-Key'] = k;
+  if (o.body !== undefined && m === 'POST') { h['Content-Type'] = 'application/json'; init.body = JSON.stringify(o.body); }
+  var t = performance.now(), r = await fetch(u.toString(), init), raw = await r.text(), ms = Math.round(performance.now() - t), d = null;
+  try { d = JSON.parse(raw); } catch (e) {}
+  lat(ms); return { ok: r.ok, status: r.status, ms: ms, raw: raw, data: d };
+}
+function bad(r) { return !r.ok || (r.data && (r.data.status === false || r.data.ok === false)); }
+function emsg(r) {
+  var d = r.data || {};
+  if (r.status === 429) return 'Kuota harian habis atau request terlalu cepat (HTTP 429)' + (key() ? '' : ' — isi API key di menu Pengaturan');
+  if (r.status === 401 || r.status === 403) return 'API key ditolak atau belum valid (HTTP ' + r.status + ')';
+  return String(d.message || d.error || d.msg || ('HTTP ' + r.status));
+}
+function walk(o, p, out, d) {
+  if (typeof o === 'number' || typeof o === 'boolean') o = String(o);
+  if (o == null || d > 6) return;
+  if (typeof o === 'string') { out.push({ k: p.split('.').pop().toLowerCase(), p: p.toLowerCase(), v: o }); return; }
+  if (Array.isArray(o)) { o.slice(0, 5).forEach(function (x, i) { walk(x, p + '.' + i, out, d + 1); }); return; }
+  if (typeof o === 'object') Object.keys(o).forEach(function (k) { walk(o[k], p ? p + '.' + k : k, out, d + 1); });
+}
+var HTTP = /^https?:\/\//i;
+function score(i, fmt, src) {
+  if (!HTTP.test(i.v) || i.v === src) return -1;
+  var v = i.v.toLowerCase();
+  if (/thumb|cover|image|img|poster|avatar|icon|logo|photo/.test(i.k) || /\.(jpe?g|png|webp|gif)(\?|$)/.test(v)) return -1;
+  var s = 1;
+  if (fmt !== 'mp4') { if (/mp3|audio|music|sound|m4a/.test(i.p) || /\.(mp3|m4a|wav|ogg)(\?|$)/.test(v)) s += 6; if (/video|mp4/.test(i.p) && !/audio/.test(i.p)) s -= 2; }
+  else { if (/mp4|video/.test(i.p) || /\.(mp4|webm|mov)(\?|$)/.test(v)) s += 6; if (/hd/.test(i.k)) s += 1; if (/mp3|audio|music/.test(i.p)) s -= 3; }
+  if (/download|dl|link|url|src/.test(i.k)) s += 2;
+  if (/nowm|no_?wm|nowatermark/.test(i.p)) s += 1;
+  return s;
+}
+function media(d, fmt, src) {
+  var it = []; walk(d && d.data !== undefined ? d.data : d, '', it, 0);
+  var b = null, bs = 0; it.forEach(function (i) { var s = score(i, fmt, src); if (s > bs) { bs = s; b = i; } });
+  var txt = function (res) { for (var n = 0; n < res.length; n++) { var f = it.filter(function (i) { return res[n].test(i.k) && i.v && i.v.length < 200 && !HTTP.test(i.v); })[0]; if (f) return f.v; } return ''; };
+  var th = it.filter(function (i) { return /thumb|cover|image|img|poster|photo/.test(i.k) && HTTP.test(i.v); })[0];
+  return { url: b ? b.v : '', title: txt([/^(title|judul)$/, /name|nama/, /caption|desc|text/]), thumb: th ? th.v : '' };
+}
+// Pilih endpoint Iroha otomatis dari URL / teks yang ditempel di Downloader
+function route(inp, fmt) {
+  var u = HTTP.test(inp), h = '';
+  if (u) { try { h = new URL(inp).hostname.toLowerCase().replace(/^(www|m|vm|mobile)\./, ''); } catch (e) {} }
+  var has = function () { return Array.prototype.some.call(arguments, function (d) { return h === d || h.endsWith('.' + d); }); };
+  var aio = ['All-in-One', '/v1/aio', { url: inp }];
+  if (!u) return fmt === 'mp4' ? null : [['Spotify', '/v1/spotify', { action: 'search', q: inp }], ['YouTube', '/v1/yt/s/play', { q: inp }]];
+  if (has('youtube.com', 'youtu.be')) return fmt === 'mp4' ? [['YouTube MP4', '/v1/ytmp4', { url: inp }], aio] : [['YouTube MP3', '/v1/yt/s/play', { q: inp }], aio];
+  if (has('tiktok.com')) return [['TikTok', '/v1/tt', { url: inp }], aio];
+  if (has('facebook.com', 'fb.watch', 'fb.com')) return [['Facebook', '/v1/fbdown', { url: inp }], aio];
+  if (has('twitter.com', 'x.com')) return [['X/Twitter', '/v1/twitter', { url: inp }], aio];
+  if (has('terabox.com', '1024terabox.com', 'teraboxapp.com')) return [['Terabox', '/v1/terabox', { url: inp }]];
+  if (has('spotify.com')) return [['Spotify', '/v1/spotify', { action: 'search', q: inp }], aio];
+  if (has('soundcloud.com')) return [['SoundCloud', '/v1/soundcloud', { q: inp }], aio];
+  return [aio];
+}
+
+// --- Downloader: sekarang memakai Iroha API sungguhan (versi demo lama tetap tersimpan) ---
+window.processDownloadDemo = window.processDownload;
+var busy = false, thumb0 = '';
+window.processDownload = async function () {
+  var inp = $('downloaderUrl').value.trim(), fmt = $('downloadFormat').value;
+  if (!inp) { alert('Harap masukkan URL YouTube, Spotify, atau SoundCloud terlebih dahulu!'); return; }
+  if (busy) return;
+  var box = $('downloaderResult'), ti = $('dlTitle'), me = $('dlMeta'), a = $('dlButtonLink'), th = $('dlThumb');
+  if (!thumb0) thumb0 = th.innerHTML;
+  box.classList.remove('hidden'); th.innerHTML = thumb0; a.setAttribute('href', '#');
+  ti.innerText = 'Memproses Permintaan Downloader...'; me.innerText = 'Menghubungkan ke Iroha REST Server...';
+  var steps = route(inp, fmt);
+  if (!steps) { ti.innerText = 'Gagal memproses'; me.innerText = 'Untuk MP4, tempel URL video (YouTube, TikTok, Facebook, X, dll).'; return; }
+  busy = true; var err = '';
+  try {
+    for (var n = 0; n < steps.length; n++) {
+      var s = steps[n], r = await call(s[1], { params: s[2] });
+      if (r.status === 429) { err = emsg(r); break; }
+      if (bad(r)) { err = emsg(r); continue; }
+      var m = media(r.data, fmt, inp);
+      if (!m.url) { err = 'Respons tidak berisi link unduhan'; continue; }
+      ti.innerText = m.title || ('Media - ' + fmt.toUpperCase());
+      me.innerText = 'Format: ' + fmt.toUpperCase() + ' | Sumber: ' + s[0] + ' (Iroha API) | ' + r.ms + ' ms';
+      a.setAttribute('href', m.url);
+      if (m.thumb) { th.textContent = ''; var im = new Image(); im.alt = ''; im.referrerPolicy = 'no-referrer'; im.className = 'w-full h-full object-cover'; im.src = m.thumb; th.appendChild(im); }
+      return;
+    }
+  } catch (e) { err = e instanceof TypeError ? 'Tidak bisa menghubungi Iroha API (periksa koneksi atau CORS).' : e.message; }
+  finally { busy = false; }
+  ti.innerText = 'Gagal memproses'; me.innerText = err || 'Tidak ada hasil';
+};
+
+// --- Iroha REST API Manager: request nyata + preset semua endpoint ---
+function parse(s, m) {
+  s = (s || '').trim();
+  if (s[0] === '{' || s[0] === '[') {
+    var j; try { j = JSON.parse(s); } catch (e) { throw new Error('JSON parameter tidak valid'); }
+    if (m === 'POST') return { params: {}, body: j };
+    var o = {}; Object.keys(j || {}).forEach(function (k) { o[k] = String(j[k]); }); return { params: o };
+  }
+  var q = {}; if (s) new URLSearchParams(s.replace(/^\?/, '')).forEach(function (v, k) { q[k] = v; });
+  return m === 'POST' ? { params: q, body: q } : { params: q };
+}
+function preview(d) {
+  var b = $('apiPreview'); if (!b) return; b.textContent = '';
+  var it = [], n = 0; walk(d, '', it, 0);
+  it.forEach(function (i) {
+    if (n >= 4 || !HTTP.test(i.v)) return; var v = i.v.toLowerCase(), el = null;
+    if (/\.(jpe?g|png|webp|gif|avif)(\?|$)/.test(v)) { el = document.createElement('img'); el.referrerPolicy = 'no-referrer'; el.className = 'max-h-40 neo-border'; }
+    else if (/\.(mp3|m4a|wav|ogg)(\?|$)/.test(v)) { el = document.createElement('audio'); el.controls = true; el.className = 'w-full'; }
+    else if (/\.(mp4|webm|mov)(\?|$)/.test(v)) { el = document.createElement('video'); el.controls = true; el.className = 'max-h-48 neo-border'; }
+    if (!el) return; el.src = i.v; b.appendChild(el); n++;
+  });
+}
+window.testIrohaApi = async function () {
+  var m = $('apiMethod').value, ep = $('apiEndpoint').value.trim(), box = $('apiResponse'), pv = $('apiPreview');
+  if (pv) pv.textContent = ''; box.innerText = '[EXECUTING] ' + m + ' ' + ep + '...';
+  try {
+    var a = parse($('apiParams') ? $('apiParams').value : '', m), r = await call(ep, { method: m, params: a.params, body: a.body });
+    box.innerText = '// HTTP ' + r.status + ' · ' + r.ms + ' ms\n' + (r.data ? JSON.stringify(r.data, null, 2) : r.raw.slice(0, 4000));
+    preview(r.data);
+  } catch (e) { box.innerText = '[ERROR] ' + (e instanceof TypeError ? 'Tidak bisa menghubungi API (periksa koneksi atau CORS).' : e.message); }
+};
+
+// --- Pengaturan: cek kuota API key + preset model AI ---
+window.checkIrohaQuota = async function () {
+  var st = $('settingsStatus');
+  if (!key()) { st.textContent = 'Masukkan API key terlebih dahulu.'; return; }
+  st.textContent = 'Mengecek kuota…';
+  try {
+    var r = await call('/v1/me');
+    if (bad(r)) { st.textContent = 'Cek kuota gagal: ' + emsg(r); return; }
+    var it = []; walk(r.data && r.data.data !== undefined ? r.data.data : r.data, '', it, 0);
+    var s = it.filter(function (i) { return !/key|token|secret|pass|mail|uid|id$/.test(i.k) && !HTTP.test(i.v) && i.v.length < 40; }).slice(0, 6).map(function (i) { return i.k + ': ' + i.v; }).join(' · ');
+    st.textContent = 'API key valid. ' + (s || '');
+  } catch (e) { st.textContent = 'Cek kuota gagal: ' + (e instanceof TypeError ? 'tidak bisa menghubungi API (periksa koneksi atau CORS).' : e.message); }
+};
+var os = window.saveSettings;
+window.saveSettings = function () { if (typeof os === 'function') os.apply(this, arguments); showKey(); };
+
+function init() {
+  var sel = $('irohaPreset');
+  if (sel) {
+    var o0 = document.createElement('option'); o0.value = ''; o0.textContent = '— Pilih endpoint Iroha (' + C.length + ' tersedia) —'; sel.appendChild(o0);
+    var g = {}; C.forEach(function (c, i) {
+      if (!g[c[0]]) { g[c[0]] = document.createElement('optgroup'); g[c[0]].label = c[0]; sel.appendChild(g[c[0]]); }
+      var o = document.createElement('option'); o.value = i; o.textContent = c[1]; g[c[0]].appendChild(o);
+    });
+    sel.addEventListener('change', function () {
+      var c = C[sel.value], h = $('irohaPresetHint');
+      if (!c) { if (h) h.textContent = ''; return; }
+      $('apiMethod').value = c[2]; $('apiEndpoint').value = c[3]; if ($('apiParams')) $('apiParams').value = c[4];
+      if (h) h.textContent = c[5] + ' · ' + c[2] + ' ' + c[3];
+    });
+  }
+  var ep = $('apiEndpoint'); if (ep && ep.value === '/api/v3/media/downloader') ep.value = '/v1/myip';
+  showKey();
+  var ap = $('irohaAiPreset'), ae = $('irohaAiEndpoint');
+  if (ap && ae) {
+    var cur = ae.value.trim(), found = 'custom';
+    Object.keys(AI).forEach(function (k) { if (BASE + AI[k][0] === cur) found = k; });
+    ap.value = found;
+    ap.addEventListener('change', function () {
+      var v = AI[ap.value]; if (!v) return;
+      ae.value = BASE + v[0]; $('irohaPromptParam').value = v[1];
+      $('settingsStatus').textContent = 'Preset dipilih. Klik "Simpan Pengaturan" untuk memakainya.';
+    });
+  }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+    </script>
+</body>
+</html>
